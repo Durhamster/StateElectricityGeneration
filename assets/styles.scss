@@ -1,0 +1,54 @@
+//* Color Vars *//
+$main_text: #ffffff;
+$black: #1b222c;
+$canton_blue_bg: #2c3a47;
+
+//* Main Body *//
+body {
+  background-color: $black;
+  font-family: Arial, Helvetica, sans-serif;
+  color: $main_text;
+}
+
+/* Sets Cursor to default when hovering over Plotly graphs */
+.cursor-crosshair {
+  cursor: default !important;
+}
+
+//* Drop Down Options *//
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 75%;
+  margin-top: 5px;
+  color: $black;
+}
+
+//* Chart Divs *//
+.piegraph {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 25px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  padding: 0px;
+  margin-bottom: 10px;
+  background-color: $canton_blue_bg;
+}
+
+/* Page transition animation */
+.loading {
+  animation: fadeInAnimation ease 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

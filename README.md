@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 ### Launch the dashboard
 ```bash
-python electric.py
+python chart.py
 ```
 
 ### Sources

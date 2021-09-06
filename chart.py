@@ -1,6 +1,5 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import Dash, dcc, html
+from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objs as go
 import pandas as pd
@@ -17,7 +16,7 @@ state_options = df["STATE (FULL NAME)"].unique()
 external_stylesheets = [dbc.themes.LITERA]
 
 # The Layout of the App
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = "Electricity Generation By State"
 
 app.layout = html.Div(
@@ -63,8 +62,8 @@ app.layout = html.Div(
 
 # Call back functions
 @app.callback(
-    dash.dependencies.Output("pie-graph", "figure"),
-    [dash.dependencies.Input("STATE", "value")],
+    Output("pie-graph", "figure"),
+    [Input("STATE", "value")],
 )
 def update_graph(State):
     if State == "All States":

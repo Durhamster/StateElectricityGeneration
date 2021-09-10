@@ -39,6 +39,10 @@ body {
   background-color: $canton_blue_bg;
 }
 
+#source-link {
+  justify-content: right;
+}
+
 /* Page transition animation */
 .loading {
   animation: fadeInAnimation ease 2s;

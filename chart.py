@@ -1,8 +1,9 @@
+import dash_bootstrap_components as dbc
+import pandas as pd
+import plotly.graph_objs as go
+
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
-import dash_bootstrap_components as dbc
-import plotly.graph_objs as go
-import pandas as pd
 
 # Data
 df = pd.read_excel("data/electricity_generation.xlsx", sheet_name="2019").sort_values(

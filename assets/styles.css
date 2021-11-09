@@ -12,7 +12,7 @@ body {
 .dropdown {
   position: relative;
   display: inline-block;
-  width: 75%;
+  width: 35%;
   margin-top: 5px;
   margin-bottom: 15px;
   color: #1b222c;
@@ -29,12 +29,6 @@ body {
   padding: 0px;
   margin-bottom: 10px;
   background-color: #2c3a47;
-}
-
-#source-link {
-  -webkit-box-pack: right;
-      -ms-flex-pack: right;
-          justify-content: right;
 }
 
 /* Page transition animation */
@@ -62,6 +56,17 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Display links if page is printed */
+@media print {
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
   }
 }
 /*# sourceMappingURL=styles.css.map */

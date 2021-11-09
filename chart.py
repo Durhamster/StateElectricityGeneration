@@ -17,12 +17,21 @@ state_options = df["STATE (FULL NAME)"].unique()
 # More themes can be found here: https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/explorer/
 external_stylesheets = [dbc.themes.LITERA]
 
-# The Layout of the App
-app = Dash(__name__, external_stylesheets=external_stylesheets)
-app.title = "Electricity Generation By State"
+app = Dash(
+    __name__,
+    meta_tags=[
+        {
+            "name": "viewport",
+            "content": "width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5",
+        }
+    ],
+    title="Electricity Generation By State",
+    external_stylesheets=external_stylesheets,
+)
 
 app.config.suppress_callback_exceptions = True
 
+# Layout of the App
 app.layout = html.Div(
     [
         # Main Container
@@ -35,30 +44,21 @@ app.layout = html.Div(
                     ),
                 ),
                 dbc.Row(
-                    html.Div(
-                        [
-                            dcc.Dropdown(
-                                className="dropdown",
-                                id="STATE",
-                                options=[
-                                    {"label": i, "value": i} for i in state_options
-                                ],
-                                value="All States",
-                                clearable=False,
-                            ),
-                        ],
-                        style={"width": "25%", "display": "inline-block"},
+                    dcc.Dropdown(
+                        className="dropdown",
+                        id="STATE",
+                        options=[{"label": i, "value": i} for i in state_options],
+                        value="All States",
+                        clearable=False,
                     ),
                 ),
                 dbc.Spinner(
                     html.Div(
                         [
-                            dbc.Row(
-                                dcc.Graph(
-                                    className="piegraph",
-                                    id="pie-graph",
-                                    config={"displayModeBar": False},
-                                ),
+                            dcc.Graph(
+                                className="piegraph",
+                                id="pie-graph",
+                                config={"displayModeBar": False},
                             ),
                         ],
                         className="d-flex justify-content-center",
@@ -77,6 +77,13 @@ app.layout = html.Div(
                         ],
                     ),
                     id="source-link",
+                ),
+                dbc.Row(
+                    html.A(
+                        "GitHub Repo For This Project",
+                        href="https://github.com/Durhamster/StateElectricityGeneration",
+                        target="blank",
+                    ),
                 ),
             ]
         )  # End of Main Container
@@ -151,4 +158,7 @@ def update_graph(State):
 
 
 if __name__ == "__main__":
+    # Development
+    # app.run_server(host="127.0.0.1", debug=True)
+    # Production
     app.run_server(debug=False)

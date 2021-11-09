@@ -19,13 +19,13 @@ body {
 .dropdown {
   position: relative;
   display: inline-block;
-  width: 75%;
+  width: 35%;
   margin-top: 5px;
   margin-bottom: 15px;
   color: $black;
 }
 
-//* Chart Divs *//
+//* Chart *//
 .piegraph {
   width: 100%;
   overflow: hidden;
@@ -37,10 +37,6 @@ body {
   padding: 0px;
   margin-bottom: 10px;
   background-color: $canton_blue_bg;
-}
-
-#source-link {
-  justify-content: right;
 }
 
 /* Page transition animation */
@@ -55,5 +51,16 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Display links if page is printed */
+@media print {
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
   }
 }

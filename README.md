@@ -1,5 +1,6 @@
 # 🔌Electricity Generation By State💡
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/plotly?style=for-the-badge)
+![License](https://img.shields.io/github/license/Durhamster/StateElectricityGeneration?style=for-the-badge)
 
 This is a breakdown of the sources of electricity generation by state using PlotlyDash.
 

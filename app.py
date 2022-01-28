@@ -5,14 +5,6 @@ import plotly.graph_objs as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 
-# Data
-df = pd.read_excel("data/electricity_generation.xlsx", sheet_name="2019").sort_values(
-    by=["STATE"], axis=0, ascending=True
-)
-
-# For the drop down menu
-state_options = df["STATE (FULL NAME)"].unique()
-
 # Bootstrap Theme
 # More themes can be found here: https://dash-bootstrap-components.opensource.faculty.ai/docs/themes/explorer/
 external_stylesheets = [dbc.themes.LITERA]
@@ -33,6 +25,16 @@ server = app.server
 
 app.config.suppress_callback_exceptions = True
 
+
+# Data
+df = pd.read_excel("data/electricity_generation.xlsx", sheet_name="2019").sort_values(
+    by=["STATE"], axis=0, ascending=True
+)
+
+# For the drop down menu
+state_options = df["STATE (FULL NAME)"].unique()
+
+
 # Layout of the App
 app.layout = html.Div(
     [
@@ -52,14 +54,16 @@ app.layout = html.Div(
                         options=[{"label": i, "value": i} for i in state_options],
                         value="All States",
                         clearable=False,
+                        searchable=False,
                     ),
                 ),
+                html.H3(id="state_title", className="d-flex justify-content-center"),
                 dbc.Spinner(
                     html.Div(
                         [
                             dcc.Graph(
-                                className="piegraph",
                                 id="pie-graph",
+                                className="piegraph",
                                 config={"displayModeBar": False},
                             ),
                         ],
@@ -86,6 +90,7 @@ app.layout = html.Div(
                         href="https://github.com/Durhamster/StateElectricityGeneration",
                         target="blank",
                     ),
+                    id="github-repo-link",
                 ),
             ]
         )  # End of Main Container
@@ -96,13 +101,14 @@ app.layout = html.Div(
 # Call back functions
 @app.callback(
     Output("pie-graph", "figure"),
+    Output("state_title", "children"),
     [Input("STATE", "value")],
 )
-def update_graph(State):
-    if State == "All States":
+def update_graph(state):
+    if state == "All States":
         df_plot = df.copy()
     else:
-        df_plot = df[df["STATE (FULL NAME)"] == State]
+        df_plot = df[df["STATE (FULL NAME)"] == state]
 
     # Clean data so slices under 1% do not appear
     pv = pd.pivot_table(
@@ -147,16 +153,19 @@ def update_graph(State):
             )
         ],
         layout=dict(
-            title=f"<b style='font-size:26'>{State}</b>",
             autosize=True,
-            font=dict(family="Arial", size=12, color="white"),
             margin=dict(l=0, r=0, b=40, t=75, pad=0),
             dragmode=False,
             paper_bgcolor="#2c3a47",
+            font=dict(family="Arial", size=12, color="white"),
+            legend=dict(
+                orientation="h",
+                traceorder="normal",
+            ),
         ),
     )
 
-    return pie_chart
+    return pie_chart, state
 
 
 if __name__ == "__main__":

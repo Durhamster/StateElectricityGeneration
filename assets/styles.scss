@@ -8,6 +8,15 @@ body {
   background-color: $black;
   font-family: Arial, Helvetica, sans-serif;
   color: $main_text;
+  &::-webkit-scrollbar {
+    width: 0.5rem !important;
+  }
+  &::-webkit-scrollbar-track {
+    background: $canton_blue_bg !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $canton_blue_bg !important;
+  }
 }
 
 /* Sets Cursor to default when hovering over Plotly graphs */
@@ -15,7 +24,7 @@ body {
   cursor: default !important;
 }
 
-//* Drop Down Options *//
+/* Drop Down Options */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -25,18 +34,32 @@ body {
   color: $black;
 }
 
-//* Chart *//
-.piegraph {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 25px;
+/* Chart Area */
+#state_title {
+  background-color: $canton_blue_bg;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
+  padding-top: 0.5em;
+  margin-bottom: 0px;
+}
+
+.piegraph {
+  background-color: $canton_blue_bg;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
-  padding: 0px;
+  padding-bottom: 0.5em;
+  padding-left: 0em;
+  padding-right: 0em;
   margin-bottom: 10px;
-  background-color: $canton_blue_bg;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Source Links */
+#github-repo-link,
+#source-link {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 /* Page transition animation */
@@ -62,5 +85,12 @@ body {
   }
   a[href]:after {
     content: " (" attr(href) ")";
+  }
+}
+
+/* Mobile Options */
+@media only screen and (max-width: 455px) {
+  .dropdown {
+    width: 70%;
   }
 }

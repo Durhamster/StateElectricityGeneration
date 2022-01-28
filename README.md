@@ -14,7 +14,7 @@ pip install -r requirements.txt
 ## Launch the dashboard
 
 ```bash
-python chart.py
+python app.py
 ```
 
 ## Sources

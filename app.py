@@ -31,6 +31,36 @@ df = pd.read_excel("data/electricity_generation.xlsx", sheet_name="2019").sort_v
     by=["STATE"], axis=0, ascending=True
 )
 
+# Bar graph
+df_pivot = pd.pivot_table(df, index="STATE", aggfunc="sum")
+top10_df = df_pivot["GENERATION (Megawatthours)"].nlargest(n=10).reset_index()
+top10_df["GENERATION (Megawatthours)"] = top10_df["GENERATION (Megawatthours)"].apply(
+    lambda x: "{:,}".format(x)
+)
+
+top10_bargraph = dict(
+    data=[
+        go.Bar(
+            x=top10_df["STATE"],
+            y=top10_df["GENERATION (Megawatthours)"],
+            text=top10_df["GENERATION (Megawatthours)"],
+            marker_color="#50C878",
+        )
+    ],
+    layout=dict(
+        bargap=0.10,
+        dragmode=False,
+        paper_bgcolor="#2c3a47",
+        plot_bgcolor="#2c3a47",
+        tickformat=",d",
+        autosize=True,
+        height=700,
+        font=dict(family="Arial", size=12, color="white"),
+        margin=dict(l=5, r=5, b=25, t=5, pad=0),
+        yaxis={"visible": False, "showticklabels": False},
+    ),
+)
+
 # For the drop down menu
 state_options = df["STATE (FULL NAME)"].unique()
 
@@ -72,6 +102,28 @@ app.layout = html.Div(
                     color="primary",
                 ),
                 dbc.Row(
+                    html.H2(
+                        "Top Generating States (in Megawatthours) - 2019",
+                        className="mt-2",
+                    ),
+                ),
+                dbc.Row(
+                    dbc.Spinner(
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    id="top10-graph",
+                                    figure=top10_bargraph,
+                                    className="bargraph",
+                                    config={"displayModeBar": False},
+                                )
+                            ],
+                            className="d-flex justify-content-center",
+                        ),
+                        color="primary",
+                    ),
+                ),
+                dbc.Row(
                     html.Label(
                         [
                             "Source: ",
@@ -85,12 +137,30 @@ app.layout = html.Div(
                     id="source-link",
                 ),
                 dbc.Row(
-                    html.A(
-                        "GitHub Repo For This Project",
-                        href="https://github.com/Durhamster/StateElectricityGeneration",
-                        target="blank",
+                    html.Label(
+                        [
+                            "Code: ",
+                            html.A(
+                                "GitHub Repo For This Project",
+                                href="https://github.com/Durhamster/StateElectricityGeneration",
+                                target="blank",
+                            ),
+                        ],
                     ),
                     id="github-repo-link",
+                ),
+                dbc.Row(
+                    html.Label(
+                        [
+                            "Favicon: ",
+                            html.A(
+                                "Lightning Icon by Icons8",
+                                href="https://icons8.com/icon/2zdHzavrzFAo/lightning",
+                                target="blank",
+                            ),
+                        ],
+                    ),
+                    id="favicon_credit",
                 ),
             ]
         )  # End of Main Container
@@ -126,18 +196,24 @@ def update_graph(state):
     pv.loc[pv["GENERATION (Megawatthours)"] <= one_percent, "ENERGY SOURCE"] = "Other"
     pv.sort_values(by=["ENERGY SOURCE"], inplace=True)
 
-    # Colors for chart
-    colors_ls = [
-        "#de425b",
-        "#e66c51",
-        "#f2975a",
-        "#fac070",
-        "#ffe792",
-        "#d5d073",
-        "#a8bb59",
-        "#7aa542",
-        "#488f31",
-    ]
+    # Set colors based on energy source
+    pv.loc[pv["ENERGY SOURCE"] == "Coal", "PIE COLOR"] = "#808080"
+    pv.loc[pv["ENERGY SOURCE"] == "Geothermal", "PIE COLOR"] = "#FF0000"
+    pv.loc[pv["ENERGY SOURCE"] == "Hydroelectric Conventional", "PIE COLOR"] = "#1F618D"
+    pv.loc[pv["ENERGY SOURCE"] == "Natural Gas", "PIE COLOR"] = "#e66c51"
+    pv.loc[pv["ENERGY SOURCE"] == "Nuclear", "PIE COLOR"] = "#FFBF00"
+    pv.loc[pv["ENERGY SOURCE"] == "Other", "PIE COLOR"] = "#EADDCA"
+    pv.loc[pv["ENERGY SOURCE"] == "Other Biomass", "PIE COLOR"] = "#1A4314"
+    pv.loc[pv["ENERGY SOURCE"] == "Other Gasses", "PIE COLOR"] = "#EADDCA"
+    pv.loc[pv["ENERGY SOURCE"] == "Petroleum", "PIE COLOR"] = "#FFFFFF"
+    pv.loc[pv["ENERGY SOURCE"] == "Pumped Storage", "PIE COLOR"] = "#EADDCA"
+    pv.loc[
+        pv["ENERGY SOURCE"] == "Solar Thermal and Photovoltaic", "PIE COLOR"
+    ] = "#DE425B"
+    pv.loc[pv["ENERGY SOURCE"] == "Wind", "PIE COLOR"] = "#488F31"
+    pv.loc[
+        pv["ENERGY SOURCE"] == "Wood and Wood Derived Fuels", "PIE COLOR"
+    ] = "#942525"
 
     # Pie Chart
     pie_chart = dict(
@@ -147,7 +223,7 @@ def update_graph(state):
                 values=pv["GENERATION (Megawatthours)"],
                 textfont_size=18,
                 marker=dict(
-                    colors=colors_ls,
+                    colors=pv["PIE COLOR"],
                 ),
                 sort=False,
             )
@@ -157,6 +233,7 @@ def update_graph(state):
             margin=dict(l=0, r=0, b=40, t=75, pad=0),
             dragmode=False,
             paper_bgcolor="#2c3a47",
+            plot_bgcolor="#2c3a47",
             font=dict(family="Arial", size=12, color="white"),
             legend=dict(
                 orientation="h",

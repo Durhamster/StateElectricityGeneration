@@ -52,11 +52,60 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
 }
 
+.bargraph {
+  background-color: #2c3a47;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  padding-bottom: 0.5em;
+  padding-left: 0em;
+  padding-right: 0em;
+  margin-bottom: 10px;
+  overflow: hidden;
+  width: 100%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
 /* Source Links */
-#github-repo-link,
+#github-repo-link {
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+#github-repo-link a {
+  font-style: normal;
+}
+
+#github-repo-link a:hover {
+  color: #d4af37;
+}
+
 #source-link {
   margin-top: 0.5em;
+  font-style: italic;
   margin-bottom: 0.5em;
+}
+
+#source-link a {
+  font-style: normal;
+}
+
+#source-link a:hover {
+  color: #d4af37;
+}
+
+#favicon_credit {
+  margin-top: 0.5em;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+#favicon_credit a {
+  font-style: normal;
+}
+
+#favicon_credit a:hover {
+  color: #d4af37;
 }
 
 /* Page transition animation */

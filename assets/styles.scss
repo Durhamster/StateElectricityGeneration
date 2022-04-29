@@ -2,6 +2,7 @@
 $main_text: #ffffff;
 $black: #1b222c;
 $canton_blue_bg: #2c3a47;
+$gold: #d4af37;
 
 //* Main Body *//
 body {
@@ -43,7 +44,7 @@ body {
   margin-bottom: 0px;
 }
 
-.piegraph {
+@mixin graphs {
   background-color: $canton_blue_bg;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -55,11 +56,40 @@ body {
   width: 100%;
 }
 
+.piegraph {
+  @include graphs;
+}
+
+.bargraph {
+  @include graphs;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
 /* Source Links */
-#github-repo-link,
-#source-link {
+@mixin source_link {
   margin-top: 0.5em;
+  font-style: italic;
+  a {
+    font-style: normal;
+  }
+  a:hover {
+    color: $gold;
+  }
+}
+
+#github-repo-link {
+  @include source_link;
+}
+
+#source-link {
+  @include source_link;
   margin-bottom: 0.5em;
+}
+
+#favicon_credit {
+  @include source_link;
+  margin-bottom: 1em;
 }
 
 /* Page transition animation */
